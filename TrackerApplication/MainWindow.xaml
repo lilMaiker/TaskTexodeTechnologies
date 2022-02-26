@@ -11,5 +11,17 @@
     <Window.DataContext>
         <vm:MainWindowViewModel></vm:MainWindowViewModel>
     </Window.DataContext>
-    <Grid/>
+    <DockPanel>
+         <Grid>
+             <Grid.RowDefinitions>
+                 <RowDefinition></RowDefinition>
+                 <RowDefinition Height="55"></RowDefinition>
+             </Grid.RowDefinitions>
+             <Grid.ColumnDefinitions>
+                 <ColumnDefinition></ColumnDefinition>
+                 <ColumnDefinition></ColumnDefinition>
+                 <ColumnDefinition></ColumnDefinition>
+             </Grid.ColumnDefinitions>
+         </Grid>
+    </DockPanel>
 </Window>
