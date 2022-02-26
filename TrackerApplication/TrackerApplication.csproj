@@ -12,7 +12,6 @@
     <Folder Include="AppLogic\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
-    <Folder Include="ViewModels\Base\" />
     <Folder Include="Views\Windows\" />
   </ItemGroup>
 
