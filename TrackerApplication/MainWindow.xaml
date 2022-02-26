@@ -5,6 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TrackerApplication" 
         xmlns:vm="clr-namespace:TrackerApplication.ViewModels"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto" 
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
         Title="{Binding Path=Title}" 
         Height="450" Width="800">
@@ -12,16 +20,31 @@
         <vm:MainWindowViewModel></vm:MainWindowViewModel>
     </Window.DataContext>
     <DockPanel>
-         <Grid>
-             <Grid.RowDefinitions>
-                 <RowDefinition></RowDefinition>
-                 <RowDefinition Height="55"></RowDefinition>
-             </Grid.RowDefinitions>
-             <Grid.ColumnDefinitions>
-                 <ColumnDefinition></ColumnDefinition>
-                 <ColumnDefinition></ColumnDefinition>
-                 <ColumnDefinition></ColumnDefinition>
-             </Grid.ColumnDefinitions>
-         </Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="55">
+
+                </RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="304*"></ColumnDefinition>
+                <ColumnDefinition Width="229*"></ColumnDefinition>
+                <ColumnDefinition Width="267*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="MsgBox" 
+                    Command="{Binding Path=MessageBoxCommand}" 
+                    Cursor="Hand"
+                    Grid.Row="1"/>
+            <DataGrid Style="{DynamicResource MaterialDesignDataGrid}"
+                      Grid.Column="0"
+                      Grid.Row="0"
+                      AutoGenerateColumns="True"
+                      ItemsSource="{Binding Path=People}">
+                <DataGrid.Columns>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
     </DockPanel>
 </Window>
