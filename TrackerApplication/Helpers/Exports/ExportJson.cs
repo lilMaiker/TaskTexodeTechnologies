@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Xml.Serialization;
+using TrackerApplication.Annotations;
 using TrackerApplication.Helpers.Exports.Base;
 using TrackerApplication.Models;
 
@@ -16,7 +17,7 @@ namespace TrackerApplication.Helpers.Exports
         /// </summary>
         /// <param name="pList">List PersonModel</param>
         /// <returns></returns>
-        public static Boolean Export(List<PersonModel> pList)
+        public static Boolean Export([CanBeNull] List<PersonModel> pList)
         {
             try
             {
@@ -29,6 +30,7 @@ namespace TrackerApplication.Helpers.Exports
                 string strJson = JsonSerializer.Serialize<List<PersonModel>>(pList, opt);
                 File.WriteAllText(SaveFileDialog.FileName, strJson);
                 return true;
+
             }
             catch (Exception e)
             {
