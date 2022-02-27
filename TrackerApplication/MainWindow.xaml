@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:TrackerApplication" 
         xmlns:vm="clr-namespace:TrackerApplication.ViewModels"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         TextElement.Foreground="{DynamicResource MaterialDesignBody}"
         TextElement.FontWeight="Regular"
@@ -24,7 +25,6 @@
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
                 <RowDefinition Height="55">
-
                 </RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
@@ -33,18 +33,50 @@
                 <ColumnDefinition Width="267*"></ColumnDefinition>
             </Grid.ColumnDefinitions>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
-                    Content="MsgBox" 
-                    Command="{Binding Path=MessageBoxCommand}" 
+                    Content="Export to JSON" 
                     Cursor="Hand"
                     Grid.Row="1"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Export to XML" 
+                    Cursor="Hand"
+                    Grid.Row="2"
+                    Grid.Column="1"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Export to CSV" 
+                    Cursor="Hand"
+                    Grid.Row="2"
+                    Grid.Column="2"/>
             <DataGrid Style="{DynamicResource MaterialDesignDataGrid}"
                       Grid.Column="0"
                       Grid.Row="0"
-                      AutoGenerateColumns="True"
-                      ItemsSource="{Binding Path=People}">
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Path=People}"
+                      SelectedItem="{Binding Path=SelectedItemPerson}">
                 <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fio" Binding="{Binding Fio}" />
+                    <DataGridTextColumn Header="AvgSteps" Binding="{Binding AvgSteps}" />
+                    <DataGridTextColumn Header="MaxSteps" Binding="{Binding MaxSteps}" />
+                    <DataGridTextColumn Header="MinSteps" Binding="{Binding MinSteps}" />
                 </DataGrid.Columns>
             </DataGrid>
+            <DataGrid Grid.Row="0" 
+                      Grid.Column="1"
+                      Style="{DynamicResource MaterialDesignDataGrid}"
+                      AutoGenerateColumns="True"
+                      ItemsSource="{Binding Path=PersonInfo, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnValidationError=True}"
+                      IsReadOnly="True">
+            </DataGrid>
+            <lvc:CartesianChart x:Name="live_chart" Series="{Binding Path=SeriesCollection, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="0"
+                                Grid.Column="2">
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="Дни"/>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Шаги"/>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
         </Grid>
     </DockPanel>
 </Window>

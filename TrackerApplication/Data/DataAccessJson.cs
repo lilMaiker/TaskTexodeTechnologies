@@ -55,7 +55,7 @@ namespace TrackerApplication.Data
         /// Selected FitnesInfo from json files
         /// </summary>
         /// <returns>FitnesInfoModel</returns>
-        public static List<FitnesInfoModel> GetFitnesInfos()
+        public List<FitnesInfoModel> GetFitnesInfos()
         {
             List<FitnesInfoModel> output = new List<FitnesInfoModel>();
             //Int32 countDays = GetCountDays();
@@ -86,7 +86,7 @@ namespace TrackerApplication.Data
         /// Selected All users in json files
         /// </summary>
         /// <returns>PersonModel</returns>
-        public static List<PersonModel> GetPersons()
+        public List<PersonModel> GetPersons()
         {
             List<PersonModel> allUsers = new List<PersonModel>();
             List<FitnesInfoModel> finesInfos = GetFitnesInfos();
