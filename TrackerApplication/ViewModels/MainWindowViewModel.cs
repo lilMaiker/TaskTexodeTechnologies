@@ -26,7 +26,7 @@ namespace TrackerApplication.ViewModels
         #region Lists
         public ObservableCollection<PersonModel> People { get; set; }
         public List<PersonInfoDaysModel> PersonInfoList { get; set; }
-        public ObservableCollection<FitnesInfoModel> FitnesInfo { get; }
+        public ObservableCollection<FitnesInfoModel> FitnesInfo { get; set; }//onproperty add
 
         //For Chart
         List<int> listSteps = new List<int>();
@@ -148,6 +148,22 @@ namespace TrackerApplication.ViewModels
             set => Set(ref _SelectedItemPerson, value);
         }
 
+        private PersonModel _GetSteps;
+        public int GetSteps
+        {
+            get
+            {
+                if (_GetSteps.AvgSteps == null || _GetSteps.AvgSteps == 0)
+                    _GetSteps.AvgSteps = 0;
+                return _GetSteps.AvgSteps;
+            }
+            set
+            {
+                var avgSteps = _SelectedItemPerson.AvgSteps;
+                Set(ref avgSteps, value);
+            }
+        }
+
         /// <summary>
         /// Title
         /// </summary>
@@ -169,6 +185,20 @@ namespace TrackerApplication.ViewModels
                 where _SelectedItemPerson.Fio == t.User
                 select new PersonInfoDaysModel() { Day = t.Day, Rank = t.Rank, Status = t.Status, Steps = t.Steps });
             PersonInfo = new ObservableCollection<PersonInfoDaysModel>(PersonInfoList);
+        }
+
+        public ICommand ReadJsonFileCommand { get; }
+        private bool CanReadJsonFileExecute(object p) => true;
+        private void OnReadJsonFileExecuted(object p)
+        {
+            FitnesInfo = new ObservableCollection<FitnesInfoModel>(_da.ReadJsonFile());
+        }
+
+        public ICommand ReadJsonFilesCommand { get; }
+        private bool CanReadJsonFilesExecute(object p) => true;
+        private void OnReadJsonFilesExecuted(object p)
+        {
+            FitnesInfo = new ObservableCollection<FitnesInfoModel>(_da.ReadJsonFiles());
         }
 
 
@@ -216,6 +246,8 @@ namespace TrackerApplication.ViewModels
             ExportToCsvCommand = new LambdaCommand(OnExportToCsvCommandExecuted, CanExportToCsvCommandExecuted);
             ExportToJsonCommand = new LambdaCommand(OnExportToJsonCommandExecuted, CanExportToJsonCommandExecuted);
             ExportToXmlCommand = new LambdaCommand(OnExportToXmlCommandExecuted, CanExportToXmlCommandExecuted);
+            ReadJsonFileCommand = new LambdaCommand(OnReadJsonFileExecuted, CanReadJsonFileExecute);
+            ReadJsonFilesCommand = new LambdaCommand(OnReadJsonFilesExecuted, CanReadJsonFilesExecute);
         }
     }
 }

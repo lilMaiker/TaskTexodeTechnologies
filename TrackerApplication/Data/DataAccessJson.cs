@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows;
+using Microsoft.Win32;
 using Newtonsoft.Json;
 using TrackerApplication.Models;
 
@@ -31,11 +32,11 @@ namespace TrackerApplication.Data
         /// Return count days in folder TestData
         /// </summary>
         /// <returns>Int32</returns>
-        private static Int32 GetCountDays()
+        private static Int32 GetCountDays(string Path = @"TestData\")
         {
             try
             {
-                return new DirectoryInfo(@"TestData\").GetFiles()
+                return new DirectoryInfo(Path).GetFiles()
                     .Length;
             }
             catch (System.IO.DirectoryNotFoundException ex)
@@ -51,17 +52,49 @@ namespace TrackerApplication.Data
             }
         }
 
+        public List<FitnesInfoModel> ReadJsonFile()
+        {
+            List<FitnesInfoModel> output = new List<FitnesInfoModel>();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _countDays = 1;
+                MessageBox.Show("Okey" + _countDays);
+                return output;
+            }
+
+            return output;
+
+
+        }
+
+        public List<FitnesInfoModel> ReadJsonFiles()
+        {
+            List<FitnesInfoModel> output = new List<FitnesInfoModel>();
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            if (openFileDialog.ShowDialog() == true)
+            {
+                _countDays = GetCountDays(openFileDialog.FileName);
+                MessageBox.Show("Okey" + _countDays);
+                return output;
+            }
+
+            return output;
+
+
+        }
+
         /// <summary>
         /// Selected FitnesInfo from json files
         /// </summary>
         /// <returns>FitnesInfoModel</returns>
-        public List<FitnesInfoModel> GetFitnesInfos()
+        public List<FitnesInfoModel> GetFitnesInfos(string Path = @"TestData\")
         {
             List<FitnesInfoModel> output = new List<FitnesInfoModel>();
             //Int32 countDays = GetCountDays();
             for (int i = 1; i < _countDays + 1; i++)
                 using (StreamReader streamReader =
-                    new StreamReader($"C:\\Users\\Lenovo\\OneDrive\\Рабочий стол\\ТЗ Jun C#\\TestData\\day{i}.json"))
+                    new StreamReader($"{Path}day{i}.json"))
                 {
                     _json = streamReader.ReadToEnd();
                     List<FitnesInfoModel> items = JsonConvert.DeserializeObject<List<FitnesInfoModel>>(_json);

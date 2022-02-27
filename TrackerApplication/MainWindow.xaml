@@ -47,12 +47,14 @@
                     Content="Read JSON File" 
                     Cursor="Hand"
                     Grid.Row="1"
-                    Grid.Column="0" Margin="0,2,0,1"/>
+                    Grid.Column="0" Margin="0,2,0,1"
+                    Command="{Binding Path=ReadJsonFileCommand}"/>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Read JSON Files" 
                     Cursor="Hand"
                     Grid.Row="1"
-                    Grid.Column="1" Margin="0,2,0,1"/>
+                    Grid.Column="1" Margin="0,2,0,1"
+                    Command="{Binding Path=ReadJsonFilesCommand}"/>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to XML" 
                     Cursor="Hand"
@@ -66,6 +68,7 @@
                     Grid.Column="3"
                     Command="{Binding Path=ExportToCsvCommand}" Margin="0,2,0,1"/>
             <DataGrid Style="{DynamicResource MaterialDesignDataGrid}"
+                      AlternatingRowBackground="Coral"
                       Grid.ColumnSpan="2" 
                       Grid.Row="0"
                       AutoGenerateColumns="False"
@@ -73,13 +76,26 @@
                       ItemsSource="{Binding Path=People}"
                       SelectedItem="{Binding Path=SelectedItemPerson}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Fio" Binding="{Binding Fio}" />
-                    <DataGridTextColumn Header="AvgSteps" Binding="{Binding AvgSteps}" />
+                    <DataGridTextColumn Header="Fio" Binding="{Binding Fio}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="Липатов Александр">
+                                        <Setter Property="Background" Value="Brown"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                      
+                   
+                        <DataGridTextColumn Header="AvgSteps" Binding="{Binding AvgSteps}" />
                     <DataGridTextColumn Header="MaxSteps" Binding="{Binding MaxSteps}" />
                     <DataGridTextColumn Header="MinSteps" Binding="{Binding MinSteps}" />
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid Grid.Row="0" 
+                      AlternatingRowBackground="Beige"
                       Grid.Column="2"
                       Style="{DynamicResource MaterialDesignDataGrid}"
                       AutoGenerateColumns="False"
