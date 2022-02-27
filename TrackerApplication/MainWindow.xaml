@@ -24,33 +24,49 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition></RowDefinition>
-                <RowDefinition Height="55">
-                </RowDefinition>
+                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition Height="35"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="304*"></ColumnDefinition>
-                <ColumnDefinition Width="229*"></ColumnDefinition>
-                <ColumnDefinition Width="267*"></ColumnDefinition>
+
+                <ColumnDefinition Width="35*"></ColumnDefinition>
+                <ColumnDefinition Width="35*"></ColumnDefinition>
+                <ColumnDefinition Width="63*"></ColumnDefinition>
+                <ColumnDefinition Width="67*"></ColumnDefinition>
+
             </Grid.ColumnDefinitions>
+            <GridSplitter ShowsPreview="True" Width="4"
+                          HorizontalAlignment="Center" Margin="0,364,0,0" Grid.RowSpan="2" />
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to JSON" 
                     Cursor="Hand"
-                    Grid.Row="1"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
                     Command="{Binding Path=ExportToJsonCommand}"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Read JSON File" 
+                    Cursor="Hand"
+                    Grid.Row="1"
+                    Grid.Column="0" Margin="0,2,0,1"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Read JSON Files" 
+                    Cursor="Hand"
+                    Grid.Row="1"
+                    Grid.Column="1" Margin="0,2,0,1"/>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to XML" 
                     Cursor="Hand"
                     Grid.Row="2"
-                    Grid.Column="1"
-                    Command="{Binding Path=ExportToXmlCommand}"/>
+                    Grid.Column="2"
+                    Command="{Binding Path=ExportToXmlCommand}" Margin="0,2,0,1"/>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to CSV" 
                     Cursor="Hand"
                     Grid.Row="2"
-                    Grid.Column="2"
-                    Command="{Binding Path=ExportToCsvCommand}"/>
+                    Grid.Column="3"
+                    Command="{Binding Path=ExportToCsvCommand}" Margin="0,2,0,1"/>
             <DataGrid Style="{DynamicResource MaterialDesignDataGrid}"
-                      Grid.Column="0"
+                      Grid.ColumnSpan="2" 
                       Grid.Row="0"
                       AutoGenerateColumns="False"
                       IsReadOnly="True"
@@ -64,7 +80,7 @@
                 </DataGrid.Columns>
             </DataGrid>
             <DataGrid Grid.Row="0" 
-                      Grid.Column="1"
+                      Grid.Column="2"
                       Style="{DynamicResource MaterialDesignDataGrid}"
                       AutoGenerateColumns="False"
                       ItemsSource="{Binding Path=PersonInfo, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnValidationError=True}"
@@ -78,14 +94,20 @@
             </DataGrid>
             <lvc:CartesianChart x:Name="live_chart" Series="{Binding Path=SeriesCollection, UpdateSourceTrigger=PropertyChanged}"
                                 Grid.Row="0"
-                                Grid.Column="2">
+                                Grid.Column="3">
+               
                 <lvc:CartesianChart.AxisX>
-                    <lvc:Axis Title="Дни"/>
+                    <lvc:Axis Title="Дни">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Stroke="Red"/>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
                 </lvc:CartesianChart.AxisX>
                 <lvc:CartesianChart.AxisY>
                     <lvc:Axis Title="Шаги"/>
                 </lvc:CartesianChart.AxisY>
             </lvc:CartesianChart>
+
         </Grid>
     </DockPanel>
 </Window>

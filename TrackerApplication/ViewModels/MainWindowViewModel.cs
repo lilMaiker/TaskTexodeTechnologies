@@ -9,7 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 using LiveCharts;
+using LiveCharts.Configurations;
 using LiveCharts.Wpf;
 using TrackerApplication.Data;
 using TrackerApplication.Helpers.Exports;
@@ -92,12 +94,32 @@ namespace TrackerApplication.ViewModels
                     listDays.Add(t.Day);
                 }
 
+                int max = 0;
+                int min = 0;
+                for (int i = 0; i < listSteps.Count; i++)
+                {
+                    if (listSteps[i] > max) max = listSteps[i];
+                   
+                }
+
+                min = max;
+                for (int i = 0; i < listSteps.Count; i++)
+                {
+                    if (listSteps[i] < min) min = listSteps[i];
+                }
+
                 SeriesCollection = new SeriesCollection
                 {
                     new LineSeries
                     {
                         Values = new ChartValues<int>(listSteps),
-                        Title = "Шаги"
+                        Title = "Шаги",
+                        Configuration = Mappers.Xy<int>()
+                            .X((value, index) => index)
+                            .Y((value, index) => value)
+                            .Stroke((value, index) =>  value == max || value == min ? Brushes.Red : null)
+                            .Fill((value, index) => value == max || value == min ? Brushes.Red : null)
+
                     },
                     new ColumnSeries
                     {
@@ -105,6 +127,7 @@ namespace TrackerApplication.ViewModels
                         Title = "День"
                     }
                 };
+                
             }
             catch (Exception e)
             {
