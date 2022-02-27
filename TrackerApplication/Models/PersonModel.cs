@@ -7,7 +7,7 @@ using TrackerApplication.Annotations;
 
 namespace TrackerApplication.Models
 {
-    internal class PersonModel : INotifyPropertyChanged
+    public class PersonModel : INotifyPropertyChanged
     {
         public string Fio { get; set; }
         public int AvgSteps { get; set; }

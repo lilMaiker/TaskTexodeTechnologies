@@ -12,6 +12,7 @@ using System.Windows.Input;
 using LiveCharts;
 using LiveCharts.Wpf;
 using TrackerApplication.Data;
+using TrackerApplication.Helpers.Exports;
 using TrackerApplication.Infrastructure.Commands;
 using TrackerApplication.Models;
 using TrackerApplication.ViewModels.Base;
@@ -20,63 +21,116 @@ namespace TrackerApplication.ViewModels
 {
     internal class MainWindowViewModel : ViewModel
     {
+        #region Lists
+        public ObservableCollection<PersonModel> People { get; set; }
+        public List<PersonInfoDaysModel> PersonInfoList { get; set; }
+        public ObservableCollection<FitnesInfoModel> FitnesInfo { get; }
+
+        //For Chart
+        List<int> listSteps = new List<int>();
+        List<int> listDays = new List<int>();
+
+        #endregion
+
+        //Other
+        private readonly DataAccessJson _da = new DataAccessJson();
+
+
+        #region SeriesCollection - Collection for Chart
+
+        /// <summary>
+        /// Collection
+        /// </summary>
         private SeriesCollection _SeriesCollection;
         public SeriesCollection SeriesCollection
         {
             get => _SeriesCollection;
             set => Set(ref _SeriesCollection, value);
         }
-        public ObservableCollection<PersonModel> People { get; set; }
+
+        #endregion
+
+        #region Fucntions
+        private void GetPersonal()
+        {
+            try
+            {
+                PersonInfoList.Clear();
+                PersonInfoList.AddRange(from t in FitnesInfo
+                    where _SelectedItemPerson.Fio == t.User
+                    select new PersonInfoDaysModel() { Day = t.Day, Rank = t.Rank, Status = t.Status, Steps = t.Steps });
+                PersonInfo = new ObservableCollection<PersonInfoDaysModel>(PersonInfoList);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        private void MsgBoxSuccessExport(bool isTrue)
+        {
+            if (isTrue)
+                MessageBox.Show("Export complete", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+            else
+                MessageBox.Show("Export error", "Export", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void ClearList()
+        {
+            listSteps.Clear();
+            listDays.Clear();
+        }
+
+        private void BindChart()
+        {
+            try
+            {
+                ClearList();
+                foreach (var t in PersonInfo)
+                {
+                    listSteps.Add(t.Steps);
+                    listDays.Add(t.Day);
+                }
+
+                SeriesCollection = new SeriesCollection
+                {
+                    new LineSeries
+                    {
+                        Values = new ChartValues<int>(listSteps),
+                        Title = "Шаги"
+                    },
+                    new ColumnSeries
+                    {
+                        Values = new ChartValues<int>(listDays),
+                        Title = "День"
+                    }
+                };
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+
+        #endregion
+
 
         private ObservableCollection<PersonInfoDaysModel> _PersonInfo;
-        public List<PersonInfoDaysModel> PersonInfoList { get; set; }
-
         public ObservableCollection<PersonInfoDaysModel> PersonInfo
         {
             get => _PersonInfo;
             set => Set(ref _PersonInfo, value);
         }
-        public ObservableCollection<FitnesInfoModel> FitnesInfo { get; }
-
-
-        private readonly DataAccessJson _da = new DataAccessJson();
-        private string _Title = "TaskTexodeTechnologies";
+        
         private PersonModel _SelectedItemPerson;
-
         public PersonModel SelectedItemPerson
         {
             get
             {
                 //Debug.Print(_SelectedItemPerson.Fio);
                 GetPersonal();
-                try
-                {
-                    var list = new List<int>();
-                    var listDay = new List<int>();
-                    for (int i = 0; i < PersonInfo.Count; i++)
-                    {
-                        list.Add(PersonInfo[i].Steps);
-                        listDay.Add(PersonInfo[i].Day);
-                    }
-
-                    SeriesCollection = new SeriesCollection
-                    {
-                        new LineSeries
-                        {
-                            Values = new ChartValues<int>(list),
-                            Title = "Шаги"
-                        },
-                        new ColumnSeries
-                        {
-                            Values = new ChartValues<int>(listDay),
-                            Title = "День"
-                        }
-                    };
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                BindChart();
                 return _SelectedItemPerson;
             }
             set => Set(ref _SelectedItemPerson, value);
@@ -85,6 +139,7 @@ namespace TrackerApplication.ViewModels
         /// <summary>
         /// Title
         /// </summary>
+        private string _Title = "TaskTexodeTechnologies";
         public string Title
         {
             get => _Title;
@@ -98,35 +153,42 @@ namespace TrackerApplication.ViewModels
         private void OnGetPeronalInfoCommandExecuted(object p)
         {
             PersonInfoList.Clear();
-            //Console.WriteLine(_SelectedItemPerson.Fio);
             PersonInfoList.AddRange(from t in FitnesInfo
                 where _SelectedItemPerson.Fio == t.User
                 select new PersonInfoDaysModel() { Day = t.Day, Rank = t.Rank, Status = t.Status, Steps = t.Steps });
             PersonInfo = new ObservableCollection<PersonInfoDaysModel>(PersonInfoList);
         }
 
-        private void GetPersonal()
-        {
-            try
-            {
-                PersonInfoList.Clear();
-                //Console.WriteLine(_SelectedItemPerson.Fio);
-                PersonInfoList.AddRange(from t in FitnesInfo
-                    where _SelectedItemPerson.Fio == t.User
-                    select new PersonInfoDaysModel() { Day = t.Day, Rank = t.Rank, Status = t.Status, Steps = t.Steps });
-                PersonInfo = new ObservableCollection<PersonInfoDaysModel>(PersonInfoList);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
-        }
 
+        /// <summary>
+        /// Check Correct working command
+        /// </summary>
         public ICommand MessageBoxCommand { get; }
         private bool CanMessageBoxCommandExecuted(object p) => true;
         private void OnMessageBoxCommandExecuted(object p)
         {
             MessageBox.Show("MsgBoxCommand");
+        }
+
+        public ICommand ExportToCsvCommand { get; }
+        private bool CanExportToCsvCommandExecuted(object p) => true;
+        private void OnExportToCsvCommandExecuted(object p)
+        {
+            MsgBoxSuccessExport(ExportCsv.Export(_da.GetPersonsAndInfo()));
+        }
+
+        public ICommand ExportToJsonCommand { get; }
+        private bool CanExportToJsonCommandExecuted(object p) => true;
+        private void OnExportToJsonCommandExecuted(object p)
+        {
+            MsgBoxSuccessExport(ExportJson.Export(_da.GetPersonsAndInfo()));
+        }
+
+        public ICommand ExportToXmlCommand { get; }
+        private bool CanExportToXmlCommandExecuted(object p) => true;
+        private void OnExportToXmlCommandExecuted(object p)
+        {
+            MsgBoxSuccessExport(ExportXml.Export(_da.GetPersonsAndInfo()));
         }
 
         #endregion
@@ -139,19 +201,9 @@ namespace TrackerApplication.ViewModels
             People = new ObservableCollection<PersonModel>(_da.GetPersonsAndInfo());
             MessageBoxCommand = new LambdaCommand(OnMessageBoxCommandExecuted, CanMessageBoxCommandExecuted);
             GetPeronalInfoCommand = new LambdaCommand(OnGetPeronalInfoCommandExecuted, CanGetPeronalInfoCommandExecuted);
-            var list = new List<int>();
-            for (int i = 0; i < People.Count; i++)
-            {
-                list.Add(People[i].AvgSteps);
-            }
-
-            SeriesCollection = new SeriesCollection
-            {
-                new LineSeries
-                {
-                    Values = new ChartValues<int>(list)
-                }
-            };
+            ExportToCsvCommand = new LambdaCommand(OnExportToCsvCommandExecuted, CanExportToCsvCommandExecuted);
+            ExportToJsonCommand = new LambdaCommand(OnExportToJsonCommandExecuted, CanExportToJsonCommandExecuted);
+            ExportToXmlCommand = new LambdaCommand(OnExportToXmlCommandExecuted, CanExportToXmlCommandExecuted);
         }
     }
 }

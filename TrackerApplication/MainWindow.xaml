@@ -35,17 +35,20 @@
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to JSON" 
                     Cursor="Hand"
-                    Grid.Row="1"/>
+                    Grid.Row="1"
+                    Command="{Binding Path=ExportToJsonCommand}"/>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to XML" 
                     Cursor="Hand"
                     Grid.Row="2"
-                    Grid.Column="1"/>
+                    Grid.Column="1"
+                    Command="{Binding Path=ExportToXmlCommand}"/>
             <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
                     Content="Export to CSV" 
                     Cursor="Hand"
                     Grid.Row="2"
-                    Grid.Column="2"/>
+                    Grid.Column="2"
+                    Command="{Binding Path=ExportToCsvCommand}"/>
             <DataGrid Style="{DynamicResource MaterialDesignDataGrid}"
                       Grid.Column="0"
                       Grid.Row="0"
@@ -63,9 +66,15 @@
             <DataGrid Grid.Row="0" 
                       Grid.Column="1"
                       Style="{DynamicResource MaterialDesignDataGrid}"
-                      AutoGenerateColumns="True"
+                      AutoGenerateColumns="False"
                       ItemsSource="{Binding Path=PersonInfo, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnValidationError=True}"
                       IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Day" Binding="{Binding Day}" />
+                    <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" />
+                    <DataGridTextColumn Header="Steps" Binding="{Binding Steps}" />
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                </DataGrid.Columns>
             </DataGrid>
             <lvc:CartesianChart x:Name="live_chart" Series="{Binding Path=SeriesCollection, UpdateSourceTrigger=PropertyChanged}"
                                 Grid.Row="0"
