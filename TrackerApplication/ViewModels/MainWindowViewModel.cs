@@ -94,32 +94,21 @@ namespace TrackerApplication.ViewModels
                     listDays.Add(t.Day);
                 }
 
-                int max = 0;
                 int min = 0;
-                for (int i = 0; i < listSteps.Count; i++)
-                {
-                    if (listSteps[i] > max) max = listSteps[i];
-                   
-                }
-
-                min = max;
-                for (int i = 0; i < listSteps.Count; i++)
-                {
-                    if (listSteps[i] < min) min = listSteps[i];
-                }
+                int max = listSteps.Prepend(0).Max();
+                min = listSteps.Prepend(max).Min();
 
                 SeriesCollection = new SeriesCollection
                 {
                     new LineSeries
                     {
                         Values = new ChartValues<int>(listSteps),
-                        Title = "Шаги",
+                        Title = "Шагов",
                         Configuration = Mappers.Xy<int>()
                             .X((value, index) => index)
                             .Y((value, index) => value)
                             .Stroke((value, index) =>  value == max || value == min ? Brushes.Red : null)
                             .Fill((value, index) => value == max || value == min ? Brushes.Red : null)
-
                     },
                     new ColumnSeries
                     {
