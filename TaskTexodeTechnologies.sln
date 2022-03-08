@@ -7,27 +7,32 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{EC672DB3
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{A698F9BB-CD78-42EF-A192-0BDCAC90F637}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackerApplication", "TrackerApplication\TrackerApplication.csproj", "{E2B541B5-3FE2-4B22-B783-BF24473411B5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerApplication", "TrackerApplication\TrackerApplication.csproj", "{E2B541B5-3FE2-4B22-B783-BF24473411B5}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "FirstTask", "FirstTask", "{F7B24B5A-3D16-490C-ABAD-CD3EE0066E95}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SecondTask", "SecondTask", "{77334867-ACDF-4ACE-AFDB-1BC0CA7968A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrackerBase", "TrackerBase\TrackerBase.csproj", "{1FF9DAF2-C70B-4A09-8170-98FB2856A8B3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TrackerBase", "TrackerBase\TrackerBase.csproj", "{1FF9DAF2-C70B-4A09-8170-98FB2856A8B3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestConsole", "TestConsole\TestConsole.csproj", "{652B5316-F80F-4DBA-9133-67BE16C672D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{652B5316-F80F-4DBA-9133-67BE16C672D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestApplication", "TestApplication\TestApplication.csproj", "{0432F302-6A81-4D73-BBD9-990E406DA639}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestApplication", "TestApplication\TestApplication.csproj", "{0432F302-6A81-4D73-BBD9-990E406DA639}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{5FEFD4EF-B97A-4177-8E88-8B9FCC528A22}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A398A2BE-C0BD-411B-8DA4-AC21B528B843}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServerSelfHostedConsole", "ServerSelfHostedConsole\ServerSelfHostedConsole.csproj", "{8BF73AC5-E535-45BE-9D2C-1B631FFBF371}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ServerSelfHostedConsole", "ServerSelfHostedConsole\ServerSelfHostedConsole.csproj", "{8BF73AC5-E535-45BE-9D2C-1B631FFBF371}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientApplication", "ClientApplication\ClientApplication.csproj", "{837BE6CC-656C-483C-A341-A2E304C69EF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientApplication", "ClientApplication\ClientApplication.csproj", "{837BE6CC-656C-483C-A341-A2E304C69EF3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClientServerBase", "ClientServerBase\ClientServerBase.csproj", "{7C7AE1B9-3DA6-4ADD-8843-6D14D44C201C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ClientServerBase", "ClientServerBase\ClientServerBase.csproj", "{7C7AE1B9-3DA6-4ADD-8843-6D14D44C201C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E91C07E4-2912-4983-ADE4-E343247909C1}"
+	ProjectSection(SolutionItems) = preProject
+		Readme.txt = Readme.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

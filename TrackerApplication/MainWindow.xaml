@@ -3,10 +3,127 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:TrackerApplication"
+        xmlns:local="clr-namespace:TrackerApplication" 
+        xmlns:vm="clr-namespace:TrackerApplication.ViewModels"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal" 
+        TextOptions.TextRenderingMode="Auto" 
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
+        Title="{Binding Path=Title}" 
+        Height="450" Width="800">
+    <Window.DataContext>
+        <vm:MainWindowViewModel></vm:MainWindowViewModel>
+    </Window.DataContext>
+    <DockPanel>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition></RowDefinition>
+                <RowDefinition Height="35"></RowDefinition>
+                <RowDefinition Height="35"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
 
-    </Grid>
+                <ColumnDefinition Width="35*"></ColumnDefinition>
+                <ColumnDefinition Width="35*"></ColumnDefinition>
+                <ColumnDefinition Width="63*"></ColumnDefinition>
+                <ColumnDefinition Width="67*"></ColumnDefinition>
+
+            </Grid.ColumnDefinitions>
+            <GridSplitter ShowsPreview="True" Width="4"
+                          HorizontalAlignment="Center" Margin="0,364,0,0" Grid.RowSpan="2" />
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Export to JSON" 
+                    Cursor="Hand"
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Command="{Binding Path=ExportToJsonCommand}"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Read JSON File" 
+                    Cursor="Hand"
+                    Grid.Row="1"
+                    Grid.Column="0" Margin="0,2,0,1"
+                    Command="{Binding Path=ReadJsonFileCommand}"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Read JSON Files" 
+                    Cursor="Hand"
+                    Grid.Row="1"
+                    Grid.Column="1" Margin="0,2,0,1"
+                    Command="{Binding Path=ReadJsonFilesCommand}"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Export to XML" 
+                    Cursor="Hand"
+                    Grid.Row="2"
+                    Grid.Column="2"
+                    Command="{Binding Path=ExportToXmlCommand}" Margin="0,2,0,1"/>
+            <Button Effect="{DynamicResource MaterialDesignShadowDepth1}" 
+                    Content="Export to CSV" 
+                    Cursor="Hand"
+                    Grid.Row="2"
+                    Grid.Column="3"
+                    Command="{Binding Path=ExportToCsvCommand}" Margin="0,2,0,1"/>
+            <DataGrid Style="{DynamicResource MaterialDesignDataGrid}"
+                      AlternatingRowBackground="Coral"
+                      Grid.ColumnSpan="2" 
+                      Grid.Row="0"
+                      AutoGenerateColumns="False"
+                      IsReadOnly="True"
+                      ItemsSource="{Binding Path=People}"
+                      SelectedItem="{Binding Path=SelectedItemPerson}">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Fio" Binding="{Binding Fio}">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Style.Triggers>
+                                    <Trigger Property="Text" Value="Липатов Александр">
+                                        <Setter Property="Background" Value="Brown"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                      
+                   
+                        <DataGridTextColumn Header="AvgSteps" Binding="{Binding AvgSteps}" />
+                    <DataGridTextColumn Header="MaxSteps" Binding="{Binding MaxSteps}" />
+                    <DataGridTextColumn Header="MinSteps" Binding="{Binding MinSteps}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <DataGrid Grid.Row="0" 
+                      AlternatingRowBackground="Beige"
+                      Grid.Column="2"
+                      Style="{DynamicResource MaterialDesignDataGrid}"
+                      AutoGenerateColumns="False"
+                      ItemsSource="{Binding Path=PersonInfo, NotifyOnSourceUpdated=True, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, NotifyOnValidationError=True}"
+                      IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Day" Binding="{Binding Day}" />
+                    <DataGridTextColumn Header="Rank" Binding="{Binding Rank}" />
+                    <DataGridTextColumn Header="Steps" Binding="{Binding Steps}" />
+                    <DataGridTextColumn Header="Status" Binding="{Binding Status}" />
+                </DataGrid.Columns>
+            </DataGrid>
+            <lvc:CartesianChart x:Name="live_chart" Series="{Binding Path=SeriesCollection, UpdateSourceTrigger=PropertyChanged}"
+                                Grid.Row="0"
+                                Grid.Column="3">
+               
+                <lvc:CartesianChart.AxisX>
+                    <lvc:Axis Title="Дни">
+                        <lvc:Axis.Separator>
+                            <lvc:Separator Stroke="Red"/>
+                        </lvc:Axis.Separator>
+                    </lvc:Axis>
+                </lvc:CartesianChart.AxisX>
+                <lvc:CartesianChart.AxisY>
+                    <lvc:Axis Title="Шаги"/>
+                </lvc:CartesianChart.AxisY>
+            </lvc:CartesianChart>
+
+        </Grid>
+    </DockPanel>
 </Window>
